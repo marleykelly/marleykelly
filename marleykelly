@@ -1,0 +1,15 @@
+SELECT wallet_address, COUNT(*) as total_nfts
+FROM (
+    SELECT buyer as wallet_address, token_id
+    FROM nft.trades
+    WHERE collection = 'Parallel Alpha'
+        AND block_time >= NOW() - INTERVAL '30' DAY 
+        AND block_time < NOW() 
+        AND buyer IS NOT NULL
+    UNION ALL
+    SELECT seller as wallet_address, token_id
+    FROM nft.trades
+    WHERE collection = 'Parallel Alpha'
+        AND block_time >= NOW() - INTERVAL '30' DAY 
+        AND block_time < NOW()
+        AND seller IS NOT NULL
